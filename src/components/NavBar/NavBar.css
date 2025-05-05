@@ -1,0 +1,54 @@
+/* 导航栏 */
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;  /* 让它完全覆盖，而不是 width: 100% */
+    height: 48px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px; /* 调整 padding 以防溢出 */
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* 避免 nav 本身溢出 */
+  }
+  
+  .nav-logo {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+  }
+  
+  .nav-menu li a {
+    color: #1d1d1f;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  
+  .nav-menu li a.router-link-exact-active {
+    background: #e8f3ff;
+    color: #0066cc;
+    font-weight: 500;
+  }
+  
+  .nav-menu li a:hover {
+    color: #0066cc;
+  }
+  
+  .nav-profile {
+    font-weight: 600;
+    cursor: pointer;
+  }
