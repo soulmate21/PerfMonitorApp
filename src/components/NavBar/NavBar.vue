@@ -1,9 +1,7 @@
 <template>
   <!-- 导航栏 -->
   <nav class="nav">
-      <div class="nav-username" @click="username">
-        <span>wind</span>
-      </div>
+      <div id="username" class="nav-username" @click="showUsername">{{ username }}</div>
       <ul class="nav-menu">
         <li v-for="item in menuItems" :key="item.name">
           <router-link 
@@ -13,7 +11,30 @@
           </router-link>
         </li>
       </ul>
-      <div class="nav-profile" @click="toggleProfileMenu">{{ project }}</div>
+      <div
+        id="project"
+        class="nav-profile"
+        tabindex="0"
+        @click="toggleProfileMenu"
+        ref="triggerRef"
+      >
+        {{ disProject }}
+        <div
+          v-if="profileMenuVisible"
+          class="dropdown-menu"
+          ref="dropdownRef"
+        >
+          <div
+            v-for="(project, index) in projects"
+            :key="index"
+            class="dropdown-item"
+            @click.stop="selectProject(project)"
+          >
+            {{ project.description }}
+          </div>
+        </div>
+      </div>
+
   </nav>
 </template>
 
@@ -22,14 +43,53 @@ import './NavBar.js';  // 导入同目录下的 JS 文件
 </script> -->
 <script setup>
 
-import { ref } from 'vue';
-// 方法
-function toggleProfileMenu() {
-    alert('敬请期待');
+import { ref, onMounted } from 'vue';
+import request from '@/utils/request';   //配置请求，已配置到src路径，全局管理
+
+
+const profileMenuVisible = ref(false)
+const triggerRef = ref(null)
+const dropdownRef = ref(null)
+
+const toggleProfileMenu = async () => {
+  profileMenuVisible.value = !profileMenuVisible.value
 }
 
-function username(){
-  alert('用户名');
+
+const projects = ref();
+const disProject = ref('')
+const username = ref('wind');
+
+const selectProject = (project) => {
+  console.log('你点击了项目：', project);
+  console.log('你点击了项目：', project.description);
+  disProject.value = project.description;
+  profileMenuVisible.value = !profileMenuVisible.value
+}
+
+onMounted(() => {
+  getProjects(username);
+});
+
+async function getProjects(username) {
+  try {
+    const response = await request.get('/projects/myprojects', {
+      params: {
+        username: username.value
+      }
+    });
+    projects.value = response.data;
+    disProject.value = projects.value[0].description;
+    console.log(projects.value);
+    console.log(projects.value[0]);
+  }catch (error) {
+      console.error('获取项目列表失败:', error);
+    }
+}
+
+
+function showUsername(){
+  alert(username.value);
 }
 
 // 菜单项
@@ -41,8 +101,6 @@ const menuItems = ref([
 ]);
 
 
-// 活动菜单项
-const project = ref('test');
 </script>
 
 <style scoped>

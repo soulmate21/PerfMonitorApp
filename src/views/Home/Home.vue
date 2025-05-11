@@ -74,8 +74,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import Navbar from '../../components/NavBar/NavBar.vue';
+import request from '@/utils/request';   //配置请求，已配置到src路径，全局管理
+import Navbar from '@/components/NavBar/NavBar.vue';
 
 const statsCards = ref([]);
 const testHeaders = ref(['测试名称', '项目', '状态', '执行时间', '最后运行', '操作']);
@@ -105,7 +105,7 @@ function viewTestDetails(id) {
 
 onMounted(async () => {
   try {
-    const response = await axios.get('http://localhost:8080/index');  // 替换成你的API地址
+    const response = await request.get('/index');  // 替换成你的API地址
     const data = response.data.data;
 
     // 渲染统计数据

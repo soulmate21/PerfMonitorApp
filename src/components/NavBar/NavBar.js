@@ -12,5 +12,3 @@ const menuItems = ref([
     { name: 'transaction_data', label: '性能统计' },
 ]);
 
-// 活动菜单项
-const project = ref('项目1');

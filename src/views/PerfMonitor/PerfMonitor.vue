@@ -3,12 +3,6 @@
       <Navbar />
       <!-- 主要内容 -->
       <div class="container">
-        <!-- 顶部欢迎区域 -->
-        <div class="hero">
-          <transition name="fade" appear>
-            <h1>主机性能监控</h1>
-          </transition>
-        </div>
         
         <!-- 概览数据卡片区域 -->
         <div class="card-grid">
@@ -650,4 +644,9 @@
       grid-template-columns: 1fr;
     }
   }
+
+  .card-grid {
+    margin-bottom: 5px;
+  }
+
   </style>

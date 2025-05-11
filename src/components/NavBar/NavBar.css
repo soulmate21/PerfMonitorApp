@@ -14,7 +14,7 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
-    overflow: hidden; /* 避免 nav 本身溢出 */
+    /* overflow: hidden; 避免 nav 本身溢出 */
   }
   
   .nav-logo {
@@ -49,6 +49,44 @@
   }
   
   .nav-profile {
+    position: relative;
+    cursor: pointer;
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 6px;
+    user-select: none;
+    display: inline-block;
+    width: 100px;
+  }
+
+  .nav-username {
     font-weight: 600;
     cursor: pointer;
   }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 8px 0;
+    width: 124px;
+    margin-left: -12px;
+    z-index: 1000;
+    transition: opacity 0.15s ease;
+    overflow: hidden;
+  }
+  
+  .dropdown-item {
+    /* padding: 8px 16px; */
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 124px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+  }
+  

@@ -44,8 +44,8 @@
   
   <script setup>
   import { ref, onMounted } from 'vue';
-  import axios from 'axios';
-  import Navbar from '../../components/NavBar/NavBar.vue';
+  import request from '@/utils/request';   //配置请求，已配置到src路径，全局管理
+  import Navbar from '@/components/NavBar/NavBar.vue';
 
   const testHeaders = ref(['ID', '测试名称','开始时间','结束时间', '操作']);
   const results = ref([]);
@@ -65,7 +65,7 @@
   
   function viewTestDetails(id) {
     // 在新窗口中打开压测详情
-    window.open(`/pressure-test-report/${id}`, '_blank');
+    window.open(`/results/${id}`, '_blank');
   }
   
   
@@ -86,17 +86,14 @@
   async function fetchTestRecords() {
     try {
       // 在实际应用中替换为真实API端点
-      const response = await axios.get('http://localhost:8080/results', {
+      const response = await request.get('http://localhost:8080/results', {
         params: {
           page: currentPage.value,
           size: pageSize
         }
       });
-      console.log('完整响应数据:', response.data);
 
       const { totalItems, content } = response.data;
-      console.log(content);
-      console.log(totalItems);
       totalPages.value = Math.ceil(totalItems / pageSize);
       results.value = content;
     } catch (error) {
