@@ -1,7 +1,7 @@
 <template>
   <!-- 导航栏 -->
   <nav class="nav">
-      <div id="username" class="nav-username" @click="showUsername">{{ username }}</div>
+    <div id="username" class="nav-username" @click="showUsername">{{ username }}</div>
       <ul class="nav-menu">
         <li v-for="item in menuItems" :key="item.name">
           <router-link 
@@ -11,36 +11,32 @@
           </router-link>
         </li>
       </ul>
+    <div
+      id="project"
+      class="nav-profile"
+      tabindex="0"
+      @click="toggleProfileMenu"
+      ref="triggerRef"
+    >
+      {{ disProject }}
       <div
-        id="project"
-        class="nav-profile"
-        tabindex="0"
-        @click="toggleProfileMenu"
-        ref="triggerRef"
+        v-if="profileMenuVisible"
+        class="dropdown-menu"
+        ref="dropdownRef"
       >
-        {{ disProject }}
         <div
-          v-if="profileMenuVisible"
-          class="dropdown-menu"
-          ref="dropdownRef"
+          v-for="(project, index) in projects"
+          :key="index"
+          class="dropdown-item"
+          @click.stop="selectProject(project)"
         >
-          <div
-            v-for="(project, index) in projects"
-            :key="index"
-            class="dropdown-item"
-            @click.stop="selectProject(project)"
-          >
-            {{ project.description }}
-          </div>
+          {{ project.name }}
         </div>
       </div>
-
+    </div>
   </nav>
 </template>
 
-<!-- <script setup>
-import './NavBar.js';  // 导入同目录下的 JS 文件
-</script> -->
 <script setup>
 
 import { ref, onMounted } from 'vue';
@@ -61,11 +57,15 @@ const disProject = ref('')
 const username = ref('wind');
 
 const selectProject = (project) => {
-  console.log('你点击了项目：', project);
-  console.log('你点击了项目：', project.description);
-  disProject.value = project.description;
+  disProject.value = project.name;
+  // console.log(disProject.value);
   profileMenuVisible.value = !profileMenuVisible.value
 }
+
+// 暴露给父组件访问
+defineExpose({
+  getCurrentProject: () => disProject.value
+});
 
 onMounted(() => {
   getProjects(username);
@@ -79,9 +79,7 @@ async function getProjects(username) {
       }
     });
     projects.value = response.data;
-    disProject.value = projects.value[0].description;
-    console.log(projects.value);
-    console.log(projects.value[0]);
+    disProject.value = projects.value[0].name;
   }catch (error) {
       console.error('获取项目列表失败:', error);
     }
